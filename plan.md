@@ -93,10 +93,10 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** motion feels "smooth and subtle — nothing springy"; test reduced-motion.
 
 ### Step 10 — Ambient water background (signature)
-- [ ] Fixed full-viewport `<canvas>` behind content, `pointer-events: none` (FR-5)
-- [ ] Faint accent ripples: trail on cursor move (throttled), stronger multi-ring burst on click, faint idle ripple
-- [ ] `requestAnimationFrame`, DPR-aware, capped concurrent ripples, pauses on hidden tab, theme-aware color
-- [ ] **Disabled entirely** under `prefers-reduced-motion` (FR-6)
+- [x] Fixed full-viewport `<canvas>` behind content, `pointer-events: none` (FR-5)
+- [x] Faint accent ripples: trail on cursor move (throttled), stronger multi-ring burst on click, faint idle ripple
+- [x] `requestAnimationFrame`, DPR-aware, capped concurrent ripples, pauses on hidden tab, theme-aware color
+- [x] **Disabled entirely** under `prefers-reduced-motion` (FR-6)
 
 **Checkpoint:** the big feel-check — must stay whisper-subtle, never fight the type; verify perf.
 

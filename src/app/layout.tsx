@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { AmbientWater } from "@/components/ambient-water";
 import { InlineScript } from "@/components/inline-script";
 import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
@@ -44,6 +45,7 @@ export default function RootLayout({
         <InlineScript html='(function(){try{var t=localStorage.getItem("theme");if(t==="day"||t==="night")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()' />
       </head>
       <body className="min-h-full flex flex-col font-sans">
+        <AmbientWater />
         <SiteNav />
         {children}
         <footer className="mx-auto flex w-full max-w-3xl flex-col gap-1 px-6 pb-10 pt-20">
