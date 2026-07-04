@@ -105,7 +105,7 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 ## Phase D — Finish & ship
 
 ### Step 11 — 404 page
-- [ ] Themed 404: "I also hate portals." + quiet link home (FR-9, §7.7)
+- [x] Themed 404: "I also hate portals." + quiet link home (FR-9, §7.7)
 
 ### Step 12 — Polish pass
 - [ ] Visible accent focus states, hover micro-interactions, keyboard nav sweep
