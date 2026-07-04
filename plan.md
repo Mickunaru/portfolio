@@ -81,8 +81,8 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 ## Phase C — Behavior & motion (cross-section)
 
 ### Step 8 — Smooth-scroll nav + active section
-- [ ] Nav links smooth-scroll to sections (FR-2)
-- [ ] Subtle active-section indication
+- [x] Nav links smooth-scroll to sections (FR-2)
+- [x] Subtle active-section indication
 
 **Checkpoint:** scroll behavior on desktop + mobile.
 

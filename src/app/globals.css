@@ -52,6 +52,18 @@
     stroke 400ms ease;
 }
 
+html {
+  /* FR-2: nav links glide to their section; offset clears the sticky nav. */
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);

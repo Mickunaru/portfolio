@@ -4,20 +4,43 @@ import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const links = [
-  { href: "#story", label: "Story" },
-  { href: "#made", label: "Made" },
-  { href: "#now", label: "Now" },
-  { href: "#contact", label: "Contact" },
+  { id: "story", label: "Story" },
+  { id: "made", label: "Made" },
+  { id: "now", label: "Now" },
+  { id: "contact", label: "Contact" },
 ];
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    /* Active section = the one crossing a band around the viewport middle.
+       "home" participates so hero clears the highlight (FR-2). */
+    const sections = ["home", ...links.map((l) => l.id)]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id === "home" ? null : entry.target.id);
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -37,11 +60,14 @@ export function SiteNav() {
         <nav aria-label="Sections" className="flex items-center gap-5">
           {/* Text links collapse on mobile (§6.2); monogram + toggle stay. */}
           <ul className="hidden items-center gap-5 sm:flex">
-            {links.map(({ href, label }) => (
-              <li key={href}>
+            {links.map(({ id, label }) => (
+              <li key={id}>
                 <a
-                  href={href}
-                  className="font-sans text-sm text-secondary hover:text-accent focus-visible:outline-2 focus-visible:outline-accent"
+                  href={`#${id}`}
+                  aria-current={activeId === id ? "true" : undefined}
+                  className={`font-sans text-sm transition-colors duration-200 hover:text-accent focus-visible:outline-2 focus-visible:outline-accent ${
+                    activeId === id ? "text-accent" : "text-secondary"
+                  }`}
                 >
                   {label}
                 </a>
