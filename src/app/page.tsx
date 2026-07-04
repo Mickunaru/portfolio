@@ -1,16 +1,10 @@
+import { ContactSection } from "@/components/contact-section";
 import { MadeSection } from "@/components/made-section";
 import { SunMoon } from "@/components/sun-moon";
 
-/* Placeholder sections — real content lands in steps 4–7 (plan.md).
-   Ids match the nav anchors; generous vertical rhythm per SRS §5.3. */
-
-const placeholders = [
-  { id: "contact", eyebrow: "contact", title: "Get in touch." },
-];
-
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-6">
+    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6">
       <section
         id="home"
         className="flex min-h-[80vh] flex-col justify-center gap-5"
@@ -80,15 +74,7 @@ export default function Home() {
         </p>
       </section>
 
-      {placeholders.map(({ id, eyebrow, title }) => (
-        <section id={id} key={id} className="flex flex-col gap-4 py-28">
-          <p className="font-mono text-xs uppercase tracking-widest text-muted">
-            {eyebrow}
-          </p>
-          <h2 className="font-serif text-3xl text-primary">{title}</h2>
-          <p className="text-secondary">Section content lands in a later step.</p>
-        </section>
-      ))}
+      <ContactSection />
     </main>
   );
 }

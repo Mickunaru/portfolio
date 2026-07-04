@@ -67,12 +67,12 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** quick — bundled with Step 5 review if preferred.
 
 ### Step 7 — Get in touch (Contact) section
-- [ ] Eyebrow **Contact**, headline "Get in touch.", subline verbatim (§7.5)
-- [ ] Two columns (form left, links right), stacking on mobile
-- [ ] Form: Name / Email / Message / `Send message` → composes `mailto:michaelle1248@gmail.com`, shows "Opening your mail app…" note (FR-7)
-- [ ] Direct links aside "Or reach me directly": email, GitHub, LinkedIn, Steam, **Download CV** → `/cv.pdf` (FR-8)
-- [ ] Commented placeholder hook for optional grayscale portrait
-- [ ] Footer: `Built with Next.js · deployed on Vercel` + `I also hate portals.` (§7.6)
+- [x] Eyebrow **Contact**, headline "Get in touch.", subline verbatim (§7.5)
+- [x] Two columns (form left, links right), stacking on mobile
+- [x] Form: Name / Email / Message / `Send message` → composes `mailto:michaelle1248@gmail.com`, shows "Opening your mail app…" note (FR-7)
+- [x] Direct links aside "Or reach me directly": email, GitHub, LinkedIn, Steam, **Download CV** → `/cv.pdf` (FR-8)
+- [x] Commented placeholder hook for optional grayscale portrait
+- [x] Footer: `Built with Next.js · deployed on Vercel` + `I also hate portals.` (§7.6)
 
 **Checkpoint:** form flow works end-to-end; decide here whether to upgrade to Formspree/Web3Forms in-page send.
 

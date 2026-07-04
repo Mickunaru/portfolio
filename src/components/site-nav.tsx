@@ -26,7 +26,7 @@ export function SiteNav() {
         scrolled ? "border-line" : "border-transparent"
       }`}
     >
-      <div className="mx-auto flex w-full max-w-2xl items-center justify-between px-6 py-3">
+      <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-3">
         <a
           href="#home"
           aria-label="Michael Le — back to top"

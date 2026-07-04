@@ -46,6 +46,12 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <SiteNav />
         {children}
+        <footer className="mx-auto flex w-full max-w-3xl flex-col gap-1 px-6 pb-10 pt-20">
+          <p className="font-sans text-xs text-muted">
+            Built with Next.js · deployed on Vercel
+          </p>
+          <p className="font-sans text-xs text-muted">I also hate portals.</p>
+        </footer>
       </body>
     </html>
   );
