@@ -5,7 +5,6 @@ import { SunMoon } from "@/components/sun-moon";
    Ids match the nav anchors; generous vertical rhythm per SRS §5.3. */
 
 const placeholders = [
-  { id: "now", eyebrow: "now", title: "Now" },
   { id: "contact", eyebrow: "contact", title: "Get in touch." },
 ];
 
@@ -68,6 +67,18 @@ export default function Home() {
       </section>
 
       <MadeSection />
+
+      <section id="now" className="flex flex-col gap-4 py-28">
+        <p className="font-mono text-xs uppercase tracking-widest text-muted">
+          now
+        </p>
+        <h2 className="font-serif text-3xl text-primary">Now</h2>
+        <p className="max-w-[68ch] font-serif text-lg leading-relaxed text-primary">
+          Just wrapped my software engineering degree. Right now I&apos;m
+          building whatever pulls me in and teaching myself whatever it
+          demands. Off the clock, I&apos;m deep into my virtual world.
+        </p>
+      </section>
 
       {placeholders.map(({ id, eyebrow, title }) => (
         <section id={id} key={id} className="flex flex-col gap-4 py-28">

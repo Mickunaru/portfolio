@@ -62,7 +62,7 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** project layout on desktop + mobile; decide on desaturate treatment; real screenshots slot in whenever ready.
 
 ### Step 6 — Now section
-- [ ] Section title **Now**, present-tense copy verbatim (§7.4)
+- [x] Section title **Now**, present-tense copy verbatim (§7.4)
 
 **Checkpoint:** quick — bundled with Step 5 review if preferred.
 
