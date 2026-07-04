@@ -87,8 +87,8 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** scroll behavior on desktop + mobile.
 
 ### Step 9 — Scroll-reveal motion
-- [ ] Sections slide in softly at ~12–15% visibility: translateY 16–24px + fade, 500–600ms ease-out, children stagger 60–80ms, runs once (FR-3, §5.4)
-- [ ] `prefers-reduced-motion`: reveals place instantly / simple fade (FR-6)
+- [x] Sections slide in softly at ~12–15% visibility: translateY 16–24px + fade, 500–600ms ease-out, children stagger 60–80ms, runs once (FR-3, §5.4)
+- [x] `prefers-reduced-motion`: reveals place instantly / simple fade (FR-6)
 
 **Checkpoint:** motion feels "smooth and subtle — nothing springy"; test reduced-motion.
 

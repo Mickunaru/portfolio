@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 
 /* Project showcase (SRS §7.3) — copy verbatim, ordered to end on the fun
    one. `screenshot` stays null until the real 16:9 asset lands in
@@ -108,39 +109,49 @@ function ProjectFrame({ project }: { project: Project }) {
 export function MadeSection() {
   return (
     <section id="made" className="flex flex-col gap-4 py-28">
-      <p className="font-mono text-xs uppercase tracking-widest text-muted">
-        made
-      </p>
-      <h2 className="font-serif text-3xl text-primary">Made</h2>
+      <RevealGroup className="flex flex-col gap-4">
+        <RevealItem>
+          <p className="font-mono text-xs uppercase tracking-widest text-muted">
+            made
+          </p>
+        </RevealItem>
+        <RevealItem>
+          <h2 className="font-serif text-3xl text-primary">Made</h2>
+        </RevealItem>
+      </RevealGroup>
       <ul className="mt-6 flex flex-col gap-20">
         {projects.map((project, i) => (
-          <li key={i} className="flex flex-col gap-3">
-            <ProjectFrame project={project} />
-            <p className="mt-2 font-mono text-xs text-muted">
-              {project.meta}
-              {project.repo && (
-                <>
-                  {" · "}
-                  <a
-                    href={project.repo.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-accent"
-                  >
-                    {project.repo.label}
-                  </a>
-                </>
-              )}
-            </p>
-            <h3 className="font-serif text-xl font-semibold text-primary">
-              {project.outcome}
-            </h3>
-            <p className="text-base leading-relaxed text-secondary">
-              {project.description}
-            </p>
-            <p className="font-mono text-xs text-muted">
-              {project.tags.join(" · ")}
-            </p>
+          <li key={i}>
+            {/* Each card reveals on its own — the section is too tall for a
+                single group trigger to feel right. */}
+            <Reveal className="flex flex-col gap-3">
+              <ProjectFrame project={project} />
+              <p className="mt-2 font-mono text-xs text-muted">
+                {project.meta}
+                {project.repo && (
+                  <>
+                    {" · "}
+                    <a
+                      href={project.repo.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-accent"
+                    >
+                      {project.repo.label}
+                    </a>
+                  </>
+                )}
+              </p>
+              <h3 className="font-serif text-xl font-semibold text-primary">
+                {project.outcome}
+              </h3>
+              <p className="text-base leading-relaxed text-secondary">
+                {project.description}
+              </p>
+              <p className="font-mono text-xs text-muted">
+                {project.tags.join(" · ")}
+              </p>
+            </Reveal>
           </li>
         ))}
       </ul>
