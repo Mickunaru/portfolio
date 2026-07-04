@@ -1,10 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
-
-/* Project showcase (SRS §7.3) — copy verbatim, ordered to end on the fun
-   one. `screenshot` stays null until the real 16:9 asset lands in
-   public/projects/; the frame renders a quiet placeholder meanwhile. */
+import { TerminalCard } from "@/components/terminal-card";
 
 type Project = {
   outcome: ReactNode;
@@ -14,6 +11,7 @@ type Project = {
   description: string;
   tags: string[];
   screenshot: string | null;
+  visual?: ReactNode;
 };
 
 const projects: Project[] = [
@@ -25,7 +23,10 @@ const projects: Project[] = [
     description:
       "Capstone for Sollio & Mitco7. DevSecOps pipeline with zero vulnerability regressions, plus an AI pipeline that categorized sensitive claims with privacy kept intact.",
     tags: ["C# / ASP.NET", "AWS", "Gemini"],
+    // Client work (Sollio & Mitco7) — real screenshot withheld pending
+    // sponsor clearance; a self-made load-test terminal card stands in.
     screenshot: null,
+    visual: <TerminalCard />,
   },
   {
     outcome:
@@ -85,9 +86,9 @@ const projects: Project[] = [
 ];
 
 function ProjectFrame({ project }: { project: Project }) {
-  return (
-    <div className="group/frame overflow-hidden rounded-lg border border-line bg-surface transition-colors duration-200 hover:border-accent">
-      {project.screenshot ? (
+  const renderContent = () => {
+    if (project.screenshot) {
+      return (
         <Image
           src={project.screenshot}
           alt={project.alt}
@@ -95,13 +96,25 @@ function ProjectFrame({ project }: { project: Project }) {
           height={720}
           className="aspect-video w-full object-cover grayscale-25 transition-[filter] duration-300 group-hover/frame:grayscale-0"
         />
-      ) : (
-        <div className="flex aspect-video w-full items-center justify-center">
-          <span className="font-mono text-xs text-muted">
-            screenshot coming soon
-          </span>
-        </div>
-      )}
+      );
+    }
+
+    if (project.visual) {
+      return project.visual;
+    }
+
+    return (
+      <div className="flex aspect-video w-full items-center justify-center">
+        <span className="font-mono text-xs text-muted">
+          screenshot coming soon
+        </span>
+      </div>
+    );
+  };
+
+  return (
+    <div className="group/frame overflow-hidden rounded-lg border border-line bg-surface transition-colors duration-200 hover:border-accent">
+      {renderContent()}
     </div>
   );
 }
