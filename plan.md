@@ -16,10 +16,10 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** blank page renders with fonts loaded, no boilerplate leftovers.
 
 ### Step 1 — Theme tokens + theme system
-- [ ] CSS custom properties for **night (default)** and day on `[data-theme]` (§5.2), wired into Tailwind
-- [ ] Theme provider: default night, persist choice in localStorage, no flash-of-wrong-theme on load (FR-1)
-- [ ] Temporary toggle button to test both themes; ~400ms color cross-fade on switch
-- [ ] Both palettes pass WCAG AA for body text
+- [x] CSS custom properties for **night (default)** and day on `[data-theme]` (§5.2), wired into Tailwind
+- [x] Theme provider: default night, persist choice in localStorage, no flash-of-wrong-theme on load (FR-1)
+- [x] Temporary toggle button to test both themes; ~400ms color cross-fade on switch
+- [x] Both palettes pass WCAG AA for body text
 
 **Checkpoint:** flip themes, confirm colors/contrast/persistence across reloads.
 

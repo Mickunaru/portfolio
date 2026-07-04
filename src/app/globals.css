@@ -1,20 +1,65 @@
 @import "tailwindcss";
 
-/* Temporary neutral canvas — real day/night theme tokens land in step 1. */
-:root {
-  --background: #09090b;
-  --foreground: #fafafa;
+/* Theme tokens. Night is the default theme. */
+[data-theme="night"] {
+  --bg: #09090b;
+  --surface: #18181b;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --border: #27272a;
+  --accent: #38bdf8;
+  --accent-soft: #7dd3fc;
+  --ripple-rgb: 56 189 248;
+}
+
+[data-theme="day"] {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --border: #e4e4e7;
+  --accent: #0ea5e9;
+  --accent-soft: #38bdf8;
+  --ripple-rgb: 14 165 233;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+  --color-line: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --font-sans: var(--font-inter);
   --font-serif: var(--font-fraunces);
   --font-mono: var(--font-jetbrains-mono);
 }
 
+/* Theme switch cross-fade: ~400ms ease. Hover states may
+   override with their own faster transitions. */
+*,
+::before,
+::after {
+  transition:
+    background-color 400ms ease,
+    color 400ms ease,
+    border-color 400ms ease,
+    fill 400ms ease,
+    stroke 400ms ease;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+/* Theme-conditional display, resolved purely in CSS so server markup is
+   theme-independent (no hydration mismatch). */
+[data-theme="night"] .day-only,
+[data-theme="day"] .night-only {
+  display: none;
 }
