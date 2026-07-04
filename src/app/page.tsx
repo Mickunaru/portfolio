@@ -4,7 +4,6 @@ import { SunMoon } from "@/components/sun-moon";
    Ids match the nav anchors; generous vertical rhythm per SRS §5.3. */
 
 const placeholders = [
-  { id: "story", eyebrow: "story", title: "Story" },
   { id: "made", eyebrow: "made", title: "Made" },
   { id: "now", eyebrow: "now", title: "Now" },
   { id: "contact", eyebrow: "contact", title: "Get in touch." },
@@ -35,6 +34,37 @@ export default function Home() {
             Open to opportunities
           </span>
         </p>
+      </section>
+
+      <section id="story" className="flex flex-col gap-4 py-28">
+        <p className="font-mono text-xs uppercase tracking-widest text-muted">
+          story
+        </p>
+        <h2 className="font-serif text-3xl text-primary">Story</h2>
+        <div className="flex max-w-[68ch] flex-col gap-5">
+          <p className="font-serif text-2xl leading-snug text-primary">
+            I didn&apos;t start in software.
+          </p>
+          <p className="font-serif text-lg leading-relaxed text-primary">
+            I was on the natural-sciences track in CEGEP when a show about a
+            start-up got me. Watching the characters go all in with nothing but
+            an idea and actually build it into something real, chasing it with
+            everything they had, flipped a switch. I wanted that kind of
+            ownership, that kind of experience.
+          </p>
+          <p className="font-serif text-lg leading-relaxed text-primary">
+            So I moved to software engineering at Polytechnique Montréal and
+            started chasing the same feeling: the thrill of creating something
+            of your own with just some characters on the screen.
+          </p>
+          <p className="font-serif text-lg leading-relaxed text-primary">
+            Turned out the whole path is the fun part.{" "}
+            <em>The messy middle as much as the finish line.</em>{" "}
+            And when the
+            thing you built actually helps someone on the other end,
+            that&apos;s what makes it worthwhile.
+          </p>
+        </div>
       </section>
 
       {placeholders.map(({ id, eyebrow, title }) => (

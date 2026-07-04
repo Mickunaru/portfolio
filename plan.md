@@ -46,8 +46,8 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** hero reads right in both themes; sun↔moon animation feels smooth.
 
 ### Step 4 — Story section
-- [ ] Section title **Story**, mono eyebrow
-- [ ] Origin narrative verbatim (§7.2), serif prose, ~60–70 char line length
+- [x] Section title **Story**, mono eyebrow
+- [x] Origin narrative verbatim (§7.2), serif prose, ~60–70 char line length
 
 **Checkpoint:** typography + reading rhythm approved.
 
