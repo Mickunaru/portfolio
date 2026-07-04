@@ -22,9 +22,25 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lemichael.vercel.app"),
   title: "Michael Le",
   description:
-    "Personal website of Michael Le — problem solver by day, gamer by night.",
+    "I build software the way I play games — all the way to 100%. Problem solver by day, gamer by night.",
+  openGraph: {
+    title: "Michael Le",
+    description:
+      "I build software the way I play games — all the way to 100%. Problem solver by day, gamer by night.",
+    url: "https://lemichael.vercel.app",
+    siteName: "Michael Le",
+    type: "website",
+    locale: "en_CA",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Michael Le",
+    description:
+      "I build software the way I play games — all the way to 100%.",
+  },
 };
 
 export default function RootLayout({
@@ -40,8 +56,6 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <head>
-        {/* Applies the stored theme before first paint (FR-1: night default,
-            persisted choice wins). */}
         <InlineScript html='(function(){try{var t=localStorage.getItem("theme");if(t==="day"||t==="night")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()' />
       </head>
       <body className="min-h-full flex flex-col font-sans">

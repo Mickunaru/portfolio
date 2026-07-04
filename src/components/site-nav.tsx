@@ -22,8 +22,6 @@ export function SiteNav() {
   }, []);
 
   useEffect(() => {
-    /* Active section = the one crossing a band around the viewport middle.
-       "home" participates so hero clears the highlight (FR-2). */
     const sections = ["home", ...links.map((l) => l.id)]
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
@@ -52,13 +50,12 @@ export function SiteNav() {
       <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-3">
         <a
           href="#home"
-          aria-label="Michael Le — back to top"
+          aria-label="ML — back to top"
           className="font-mono text-sm font-semibold tracking-widest text-primary hover:text-accent focus-visible:outline-2 focus-visible:outline-accent"
         >
           ML
         </a>
         <nav aria-label="Sections" className="flex items-center gap-5">
-          {/* Text links collapse on mobile (§6.2); monogram + toggle stay. */}
           <ul className="hidden items-center gap-5 sm:flex">
             {links.map(({ id, label }) => (
               <li key={id}>

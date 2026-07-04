@@ -6,7 +6,7 @@
   --surface: #18181b;
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
+  --text-muted: #82828c;
   --border: #27272a;
   --accent: #38bdf8;
   --accent-soft: #7dd3fc;
@@ -18,7 +18,7 @@
   --surface: #ffffff;
   --text-primary: #18181b;
   --text-secondary: #52525b;
-  --text-muted: #a1a1aa;
+  --text-muted: #71717a;
   --border: #e4e4e7;
   --accent: #0ea5e9;
   --accent-soft: #38bdf8;
@@ -69,16 +69,50 @@ body {
   color: var(--text-primary);
 }
 
-/* Theme-conditional display, resolved purely in CSS so server markup is
-   theme-independent (no hydration mismatch). */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-rise {
+  animation: rise 550ms ease-out both;
+  animation-delay: calc(var(--rise-i, 0) * 70ms);
+}
+
+@keyframes rise-solid {
+  from {
+    transform: translateY(20px);
+  }
+  to {
+    transform: none;
+  }
+}
+.hero-rise-solid {
+  animation: rise-solid 550ms ease-out both;
+  animation-delay: calc(var(--rise-i, 0) * 70ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .hero-rise-solid {
+    animation: none;
+  }
+}
+
 [data-theme="night"] .day-only,
 [data-theme="day"] .night-only {
   display: none;
 }
 
-/* Sun→moon motif (FR-4). The mask bite slides in horizontally to carve
-   the disc into a crescent; rays rotate and fade out. ~400ms ease to
-   match the theme cross-fade. */
 .sun-moon-bite {
   transition: cx 400ms ease;
 }

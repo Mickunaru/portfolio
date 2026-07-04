@@ -108,10 +108,10 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 - [x] Themed 404: "I also hate portals." + quiet link home (FR-9, §7.7)
 
 ### Step 12 — Polish pass
-- [ ] Visible accent focus states, hover micro-interactions, keyboard nav sweep
-- [ ] SEO: title, meta description, Open Graph tags + simple themed OG image (§9)
-- [ ] Favicon from ML monogram
-- [ ] Lighthouse tuning — target 95+ across the board
+- [x] Visible accent focus states, hover micro-interactions, keyboard nav sweep
+- [x] SEO: title, meta description, Open Graph tags + simple themed OG image (§9)
+- [x] Favicon from ML monogram
+- [x] Lighthouse tuning — desktop 100/100/100/100; mobile 92/100/100/100 (LCP under simulated 4G throttle is the gap)
 
 **Checkpoint:** Lighthouse scores + a11y sweep results reviewed.
 
