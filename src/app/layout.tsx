@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import { InlineScript } from "@/components/inline-script";
+import { SiteNav } from "@/components/site-nav";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -42,7 +43,10 @@ export default function RootLayout({
             persisted choice wins). */}
         <InlineScript html='(function(){try{var t=localStorage.getItem("theme");if(t==="day"||t==="night")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()' />
       </head>
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <SiteNav />
+        {children}
+      </body>
     </html>
   );
 }

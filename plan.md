@@ -24,11 +24,11 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** flip themes, confirm colors/contrast/persistence across reloads.
 
 ### Step 2 — Layout shell + nav skeleton
-- [ ] Page container, centered ~640–720px content column, generous vertical rhythm (§5.3)
-- [ ] Top-left "ML" monogram; slim sticky nav top-right: Story, Made, Now, Contact + toggle slot (§6.2)
-- [ ] Nav gains hairline border once scrolled
-- [ ] Mobile: text links collapse; monogram + toggle stay reachable
-- [ ] Empty placeholder sections with ids so nav anchors have targets
+- [x] Page container, centered ~640–720px content column, generous vertical rhythm (§5.3)
+- [x] Top-left "ML" monogram; slim sticky nav top-right: Story, Made, Now, Contact + toggle slot (§6.2)
+- [x] Nav gains hairline border once scrolled
+- [x] Mobile: text links collapse; monogram + toggle stay reachable
+- [x] Empty placeholder sections with ids so nav anchors have targets
 
 **Checkpoint:** shell looks right on desktop + mobile widths; sticky nav behaves.
 
