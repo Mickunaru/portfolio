@@ -1,10 +1,10 @@
+import { MadeSection } from "@/components/made-section";
 import { SunMoon } from "@/components/sun-moon";
 
 /* Placeholder sections — real content lands in steps 4–7 (plan.md).
    Ids match the nav anchors; generous vertical rhythm per SRS §5.3. */
 
 const placeholders = [
-  { id: "made", eyebrow: "made", title: "Made" },
   { id: "now", eyebrow: "now", title: "Now" },
   { id: "contact", eyebrow: "contact", title: "Get in touch." },
 ];
@@ -66,6 +66,8 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      <MadeSection />
 
       {placeholders.map(({ id, eyebrow, title }) => (
         <section id={id} key={id} className="flex flex-col gap-4 py-28">

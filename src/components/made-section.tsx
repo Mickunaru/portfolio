@@ -1,0 +1,149 @@
+import Image from "next/image";
+import type { ReactNode } from "react";
+
+/* Project showcase (SRS §7.3) — copy verbatim, ordered to end on the fun
+   one. `screenshot` stays null until the real 16:9 asset lands in
+   public/projects/; the frame renders a quiet placeholder meanwhile. */
+
+type Project = {
+  outcome: ReactNode;
+  alt: string;
+  meta: string;
+  repo?: { label: string; href: string };
+  description: string;
+  tags: string[];
+  screenshot: string | null;
+};
+
+const projects: Project[] = [
+  {
+    outcome:
+      "Ran a full insurance-recommendation app on a 1 vCPU box — 17 ms median, 0% errors under load",
+    alt: "Screenshot of the insurance-recommendation capstone app",
+    meta: "2026 · Capstone",
+    description:
+      "Capstone for Sollio & Mitco7. DevSecOps pipeline with zero vulnerability regressions, plus an AI pipeline that categorized sensitive claims with privacy kept intact.",
+    tags: ["C# / ASP.NET", "AWS", "Gemini"],
+    screenshot: null,
+  },
+  {
+    outcome:
+      "Shipped production software for two years while finishing my degree",
+    alt: "Screenshot of the Shopify–HubSpot sync pipeline at Okapya",
+    meta: "2024–2026 · Okapya",
+    description:
+      "At Okapya: a fault-tolerant hourly pipeline syncing thousands of Shopify events into HubSpot at 100% consistency, and a test suite I built from zero to 95%+ coverage.",
+    tags: ["Node.js", "TypeScript", "React"],
+    screenshot: null,
+  },
+  {
+    outcome:
+      "Taught myself Terraform, then stood up a database cluster in under 2 minutes",
+    alt: "Diagram of the master-replica MySQL cluster on AWS",
+    meta: "2025",
+    repo: {
+      label: "github.com/Mickunaru/LOG8415-Project",
+      href: "https://github.com/Mickunaru/LOG8415-Project",
+    },
+    description:
+      "A master-replica MySQL setup on AWS with a Python proxy doing latency-based routing — held 100% success across 86,000+ queries at 8,500+ QPS.",
+    tags: ["Terraform", "AWS", "Python"],
+    screenshot: null,
+  },
+  {
+    outcome: "Rebuilt a legacy quiz platform in Flutter with 100% feature parity",
+    alt: "Screenshot of the Kazoo quiz platform",
+    meta: "2025",
+    repo: {
+      label: "github.com/Mickunaru/Kazoo",
+      href: "https://github.com/Mickunaru/Kazoo",
+    },
+    description:
+      "Real-time avatars synced over Firebase across 10+ modules, and 30+ merge requests reviewed to keep the team unblocked.",
+    tags: ["Flutter", "Node.js", "Firebase"],
+    screenshot: null,
+  },
+  {
+    outcome: (
+      <>
+        Built a RAG assistant that answers <em>Slay the Spire</em> questions
+        with citations — for fun
+      </>
+    ),
+    alt: "Screenshot of the AskTheSpire RAG assistant",
+    meta: "2026",
+    repo: {
+      label: "github.com/Mickunaru/AskTheSpire",
+      href: "https://github.com/Mickunaru/AskTheSpire",
+    },
+    description:
+      "End-to-end retrieval with hybrid search and query expansion, tuned against real eval metrics (0.94 recall, 0.87 faithfulness).",
+    tags: ["Python", "Chroma", "Claude API"],
+    screenshot: null,
+  },
+];
+
+function ProjectFrame({ project }: { project: Project }) {
+  return (
+    <div className="group/frame overflow-hidden rounded-lg border border-line bg-surface transition-colors duration-200 hover:border-accent">
+      {project.screenshot ? (
+        <Image
+          src={project.screenshot}
+          alt={project.alt}
+          width={1280}
+          height={720}
+          className="aspect-video w-full object-cover grayscale-25 transition-[filter] duration-300 group-hover/frame:grayscale-0"
+        />
+      ) : (
+        <div className="flex aspect-video w-full items-center justify-center">
+          <span className="font-mono text-xs text-muted">
+            screenshot coming soon
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function MadeSection() {
+  return (
+    <section id="made" className="flex flex-col gap-4 py-28">
+      <p className="font-mono text-xs uppercase tracking-widest text-muted">
+        made
+      </p>
+      <h2 className="font-serif text-3xl text-primary">Made</h2>
+      <ul className="mt-6 flex flex-col gap-20">
+        {projects.map((project, i) => (
+          <li key={i} className="flex flex-col gap-3">
+            <ProjectFrame project={project} />
+            <p className="mt-2 font-mono text-xs text-muted">
+              {project.meta}
+              {project.repo && (
+                <>
+                  {" · "}
+                  <a
+                    href={project.repo.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-accent hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-accent"
+                  >
+                    {project.repo.label}
+                  </a>
+                </>
+              )}
+            </p>
+            <h3 className="font-serif text-xl font-semibold text-primary">
+              {project.outcome}
+            </h3>
+            <p className="text-base leading-relaxed text-secondary">
+              {project.description}
+            </p>
+            <p className="font-mono text-xs text-muted">
+              {project.tags.join(" · ")}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}

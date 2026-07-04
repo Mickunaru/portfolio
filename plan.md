@@ -52,12 +52,12 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** typography + reading rhythm approved.
 
 ### Step 5 — Made section (projects)
-- [ ] Five project entries in SRS order (§7.3), each with:
+- [x] Five project entries in SRS order (§7.3), each with:
   - 16:9 bordered screenshot frame via `next/image` (placeholder images until real assets)
   - Meta line (mono, year · repo link where public)
   - Bold outcome line (serif), description (sans), tech tags (mono)
-- [ ] Hover: frame border warms toward accent; optional desaturate-at-rest treatment
-- [ ] Repo links: LOG8415-Project, Kazoo, AskTheSpire
+- [x] Hover: frame border warms toward accent; optional desaturate-at-rest treatment
+- [x] Repo links: LOG8415-Project, Kazoo, AskTheSpire
 
 **Checkpoint:** project layout on desktop + mobile; decide on desaturate treatment; real screenshots slot in whenever ready.
 
