@@ -1,12 +1,11 @@
 "use client";
 
+import { SunMoon } from "@/components/sun-moon";
+
 const STORAGE_KEY = "theme";
 
-/* Temporary control for verifying the theme system — replaced by the
-   sun/moon SVG motif in plan step 3.
-
-   The label is driven by CSS off [data-theme] (see globals.css) rather than
-   React state, so the server markup is identical for both themes and there
+/* Nav theme toggle (FR-1). The sun/moon motif inside is styled purely off
+   [data-theme], so the server markup is identical for both themes and there
    is nothing to mismatch on hydration. */
 export function ThemeToggle() {
   const toggle = () => {
@@ -23,10 +22,9 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label="Toggle day/night theme"
-      className="rounded-md border border-line bg-surface px-3 py-1.5 font-sans text-sm text-secondary hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-accent"
+      className="rounded-full p-1.5 text-accent hover:text-accent-soft focus-visible:outline-2 focus-visible:outline-accent"
     >
-      <span className="night-only">☾ night</span>
-      <span className="day-only">☀ day</span>
+      <SunMoon className="h-5 w-5" />
     </button>
   );
 }

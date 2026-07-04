@@ -37,11 +37,11 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 ## Phase B — Sections, one at a time (static content first, verbatim from §7)
 
 ### Step 3 — Home / Hearth section
-- [ ] Name, hero headline in serif — "I build software the way I play games — all the way to 100%." with **100%** in accent
-- [ ] Tagline (serif italic, muted): "Problem solver by day. Gamer by night."
-- [ ] Status pill: `Open to opportunities`
-- [ ] Sun/moon SVG motif by the headline + in the nav — line-work sun that eases into moon on theme change (FR-4), replaces the temp toggle from Step 1
-- [ ] Motif is the real theme toggle, with aria labels
+- [x] Name, hero headline in serif — "I build software the way I play games — all the way to 100%." with **100%** in accent
+- [x] Tagline (serif italic, muted): "Problem solver by day. Gamer by night."
+- [x] Status pill: `Open to opportunities`
+- [x] Sun/moon SVG motif by the headline + in the nav — line-work sun that eases into moon on theme change (FR-4), replaces the temp toggle from Step 1
+- [x] Motif is the real theme toggle, with aria labels
 
 **Checkpoint:** hero reads right in both themes; sun↔moon animation feels smooth.
 

@@ -63,3 +63,30 @@ body {
 [data-theme="day"] .night-only {
   display: none;
 }
+
+/* Sun→moon motif (FR-4). The mask bite slides in horizontally to carve
+   the disc into a crescent; rays rotate and fade out. ~400ms ease to
+   match the theme cross-fade. */
+.sun-moon-bite {
+  transition: cx 400ms ease;
+}
+.sun-moon-rays {
+  transform-origin: center;
+  transition:
+    transform 400ms ease,
+    opacity 400ms ease;
+}
+[data-theme="night"] .sun-moon-bite {
+  cx: 16.5;
+}
+[data-theme="night"] .sun-moon-rays {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+}
+[data-theme="day"] .sun-moon-bite {
+  cx: 30;
+}
+[data-theme="day"] .sun-moon-rays {
+  opacity: 1;
+  transform: none;
+}
