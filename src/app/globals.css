@@ -20,9 +20,9 @@
   --text-secondary: #52525b;
   --text-muted: #71717a;
   --border: #e4e4e7;
-  --accent: #0ea5e9;
-  --accent-soft: #38bdf8;
-  --ripple-rgb: 14 165 233;
+  --accent: #f97316;
+  --accent-soft: #fb923c;
+  --ripple-rgb: 249 115 22;
 }
 
 @theme inline {

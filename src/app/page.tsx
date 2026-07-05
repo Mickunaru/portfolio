@@ -14,7 +14,7 @@ export default function Home() {
           <SunMoon className="h-10 w-10 text-accent" />
         </div>
         <p
-          className="hero-rise font-sans text-sm text-secondary"
+          className="hero-rise font-sans text-base text-secondary font-medium"
           style={{ "--rise-i": 1 } as React.CSSProperties}
         >
           Michael Le
@@ -78,7 +78,7 @@ export default function Home() {
             <RevealItem>
               <p className="font-serif text-lg leading-relaxed text-primary">
                 Turned out the whole path is the fun part.{" "}
-                <em>The messy middle as much as the finish line.</em> And when
+                <em>The messy middle as much as the finish line. </em> And when
                 the thing you built actually helps someone on the other end,
                 that&apos;s what makes it worthwhile.
               </p>
