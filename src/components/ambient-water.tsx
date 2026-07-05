@@ -3,32 +3,30 @@
 import { useEffect, useRef, useState } from "react";
 
 /* Ambient water background (FR-5): a fixed full-viewport canvas behind all
-   content rendering faint accent-colored ripples — a small trail following
-   the cursor, a stronger multi-ring burst on click, and a very faint idle
-   ripple when nothing has happened for a while.
+   content running a real heightfield water simulation — dragging the cursor
+   disturbs the surface and leaves a wake of small interfering waves, as if
+   dragging a finger across still water. A click makes a bigger splash, and
+   an occasional idle drop keeps the surface faintly alive.
 
    Constraints from the SRS: pointer-events none, requestAnimationFrame,
-   devicePixelRatio-aware, capped concurrent ripples, theme-aware color,
-   paused while the tab is hidden, whisper-subtle, and disabled entirely
-   under prefers-reduced-motion (FR-6). */
+   theme-aware color, paused while the tab is hidden, auto-sleeps once the
+   surface settles, whisper-subtle, and disabled entirely under
+   prefers-reduced-motion (FR-6).
 
-type Ripple = {
-  x: number;
-  y: number;
-  r0: number;
-  r1: number;
-  start: number;
-  dur: number;
-  alpha: number;
-};
+   Implementation: classic two-buffer wave equation on a low-res grid
+   (CELL css px per cell), rendered into a grid-sized ImageData tinted with
+   the theme accent, then scaled up to the viewport with image smoothing. */
 
-const MAX_RIPPLES = 24;
-const MOVE_THROTTLE_MS = 60;
-const MOVE_MIN_DIST = 24;
+const CELL = 3; // css px per sim cell — lower is sharper but costlier
+const DAMPING = 0.975; // energy loss per step; higher rings longer
+const MOVE_SPACING = CELL * 1.5; // wake stamp spacing along drag path
 const IDLE_AFTER_MS = 3500;
-const IDLE_EVERY_MS = 2800;
-
-const easeOutCubic = (p: number) => 1 - Math.pow(1 - p, 3);
+const IDLE_EVERY_MS = 250; // base gap between rain ticks (jittered)
+const RAIN_CLUSTER = 3; // max drops per rain tick
+const RAIN_HEAVY_CHANCE = 0.08; // odds a tick lands one big plop
+const SLEEP_EPS = 0.004; // max |height| below this → surface asleep
+const ALPHA_GAIN = 0.3; // wave height → pixel alpha
+const ALPHA_MAX = 0.5;
 
 function useReducedMotionPref() {
   const [reduced, setReduced] = useState(false);
@@ -53,15 +51,22 @@ export function AmbientWater() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let ripples: Ripple[] = [];
     let raf = 0;
     let running = false;
-    let rippleRgb = "56 189 248";
 
+    // Theme accent, as "r g b".
+    let tintR = 56;
+    let tintG = 189;
+    let tintB = 248;
     const readColor = () => {
-      rippleRgb = getComputedStyle(document.documentElement)
+      const raw = getComputedStyle(document.documentElement)
         .getPropertyValue("--ripple-rgb")
-        .trim();
+        .trim()
+        .split(/\s+/)
+        .map(Number);
+      if (raw.length === 3 && raw.every((n) => Number.isFinite(n))) {
+        [tintR, tintG, tintB] = raw;
+      }
     };
     readColor();
     const themeObserver = new MutationObserver(readColor);
@@ -70,99 +75,207 @@ export function AmbientWater() {
       attributeFilter: ["data-theme"],
     });
 
+    // Simulation state (rebuilt on resize).
+    let gw = 0;
+    let gh = 0;
+    let curr = new Float32Array(0);
+    let prev = new Float32Array(0);
+    let image: ImageData | null = null;
+    const offscreen = document.createElement("canvas");
+    const offctx = offscreen.getContext("2d");
+    if (!offctx) return;
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(window.innerWidth * dpr);
       canvas.height = Math.round(window.innerHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+
+      gw = Math.max(8, Math.ceil(window.innerWidth / CELL));
+      gh = Math.max(8, Math.ceil(window.innerHeight / CELL));
+      curr = new Float32Array(gw * gh);
+      prev = new Float32Array(gw * gh);
+      offscreen.width = gw;
+      offscreen.height = gh;
+      image = offctx.createImageData(gw, gh);
     };
     resize();
     window.addEventListener("resize", resize);
 
-    const push = (r: Ripple) => {
-      if (ripples.length >= MAX_RIPPLES) ripples.shift();
-      ripples.push(r);
+    /* Press the surface down in a small rounded bump — the wave equation
+       does the rest (propagation, reflection off edges, interference). */
+    const disturb = (cx: number, cy: number, radius: number, depth: number) => {
+      const gx = cx / CELL;
+      const gy = cy / CELL;
+      const r = Math.max(1, radius / CELL);
+      const x0 = Math.max(1, Math.floor(gx - r));
+      const x1 = Math.min(gw - 2, Math.ceil(gx + r));
+      const y0 = Math.max(1, Math.floor(gy - r));
+      const y1 = Math.min(gh - 2, Math.ceil(gy + r));
+      for (let y = y0; y <= y1; y++) {
+        for (let x = x0; x <= x1; x++) {
+          const dx = x - gx;
+          const dy = y - gy;
+          const d2 = (dx * dx + dy * dy) / (r * r);
+          if (d2 > 1) continue;
+          curr[y * gw + x] -= depth * (1 - d2) * (1 - d2);
+        }
+      }
       if (!running) start();
     };
 
-    let lastMove = 0;
-    let lastX = -1e4;
-    let lastY = -1e4;
+    let lastX = -1;
+    let lastY = -1;
     let lastActivity = performance.now();
     let lastIdle = 0;
+    let nextRainGap = IDLE_EVERY_MS;
 
     const onMove = (e: PointerEvent) => {
       const now = performance.now();
       lastActivity = now;
+      if (lastX < 0) {
+        lastX = e.clientX;
+        lastY = e.clientY;
+        return;
+      }
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
-      if (now - lastMove < MOVE_THROTTLE_MS) return;
-      if (dx * dx + dy * dy < MOVE_MIN_DIST * MOVE_MIN_DIST) return;
-      lastMove = now;
+      const dist = Math.hypot(dx, dy);
+      if (dist < MOVE_SPACING) return;
+      // Stamp along the path so fast drags leave a continuous wake; faster
+      // movement pushes slightly deeper, like a finger cutting through.
+      const depth = Math.min(1.4, 0.5 + dist * 0.02);
+      const steps = Math.min(24, Math.floor(dist / MOVE_SPACING));
+      for (let i = 1; i <= steps; i++) {
+        disturb(
+          lastX + (dx * i) / steps,
+          lastY + (dy * i) / steps,
+          CELL * 2.5,
+          depth,
+        );
+      }
       lastX = e.clientX;
       lastY = e.clientY;
-      push({
-        x: e.clientX,
-        y: e.clientY,
-        r0: 4,
-        r1: 38,
-        start: now,
-        dur: 900,
-        alpha: 0.09,
-      });
     };
 
     const onDown = (e: PointerEvent) => {
-      const now = performance.now();
-      lastActivity = now;
-      // Stronger burst: three rings, slightly staggered.
-      for (let i = 0; i < 3; i++) {
-        push({
-          x: e.clientX,
-          y: e.clientY,
-          r0: 6,
-          r1: 90 + i * 18,
-          start: now + i * 90,
-          dur: 1200,
-          alpha: 0.16 - i * 0.04,
-        });
-      }
+      lastActivity = performance.now();
+      disturb(e.clientX, e.clientY, CELL * 5, 4);
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerdown", onDown, { passive: true });
 
     const frame = (now: number) => {
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-      // Very faint drift when idle.
-      if (
-        now - lastActivity > IDLE_AFTER_MS &&
-        now - lastIdle > IDLE_EVERY_MS
-      ) {
+      // Rain mode: once the user goes idle, a light patter starts — each
+      // tick drops a small cluster at random spots with jittered timing so
+      // it never sounds mechanical, and the odd tick lands one heavy plop.
+      if (now - lastActivity > IDLE_AFTER_MS && now - lastIdle > nextRainGap) {
         lastIdle = now;
-        push({
-          x: (0.15 + 0.7 * Math.random()) * window.innerWidth,
-          y: (0.15 + 0.7 * Math.random()) * window.innerHeight,
-          r0: 4,
-          r1: 60,
-          start: now,
-          dur: 2400,
-          alpha: 0.05,
-        });
+        nextRainGap = IDLE_EVERY_MS * (0.4 + Math.random() * 1.2);
+        const drops = 1 + Math.floor(Math.random() * RAIN_CLUSTER);
+        for (let i = 0; i < drops; i++) {
+          const size = 0.3 + Math.random() * 0.7; // drop weight 0.3–1
+          disturb(
+            Math.random() * window.innerWidth,
+            Math.random() * window.innerHeight,
+            CELL * (2 + size * 2.5),
+            0.3 + size * 0.7,
+          );
+        }
+        if (Math.random() < RAIN_HEAVY_CHANCE) {
+          disturb(
+            (0.15 + 0.7 * Math.random()) * window.innerWidth,
+            (0.15 + 0.7 * Math.random()) * window.innerHeight,
+            CELL * 5,
+            2.2,
+          );
+        }
       }
 
-      ripples = ripples.filter((r) => now - r.start < r.dur);
-      for (const r of ripples) {
-        const p = (now - r.start) / r.dur;
-        if (p < 0) continue; // staggered burst ring not born yet
-        const radius = r.r0 + (r.r1 - r.r0) * easeOutCubic(p);
-        const alpha = r.alpha * (1 - p);
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgb(${rippleRgb} / ${alpha})`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
+      // Wave equation step: each cell pulled by its neighbors' average,
+      // carried by velocity (curr - prev), damped a little each step.
+      let maxAbs = 0;
+      for (let y = 1; y < gh - 1; y++) {
+        const row = y * gw;
+        for (let x = 1; x < gw - 1; x++) {
+          const i = row + x;
+          const v =
+            ((curr[i - 1] + curr[i + 1] + curr[i - gw] + curr[i + gw]) / 2 -
+              prev[i]) *
+            DAMPING;
+          prev[i] = v;
+          const a = v < 0 ? -v : v;
+          if (a > maxAbs) maxAbs = a;
+        }
+      }
+      [curr, prev] = [prev, curr];
+
+      // Paint with slope shading: light comes from the top-left, so the
+      // near face of a crest catches a pale highlight and the far face
+      // falls into a darker accent shadow — reads as refraction rather
+      // than flat shimmer. Alpha follows slope steepness.
+      if (image) {
+        const px = image.data;
+        // Lit tint (accent washed toward white) and shadow tint (accent
+        // pulled toward black), computed here so theme swaps apply live.
+        const litR = tintR + (255 - tintR) * 0.55;
+        const litG = tintG + (255 - tintG) * 0.55;
+        const litB = tintB + (255 - tintB) * 0.55;
+        const shR = tintR * 0.45;
+        const shG = tintG * 0.45;
+        const shB = tintB * 0.45;
+        for (let y = 0; y < gh; y++) {
+          const row = y * gw;
+          for (let x = 0; x < gw; x++) {
+            const i = row + x;
+            const j = i * 4;
+            if (x === 0 || y === 0 || x === gw - 1 || y === gh - 1) {
+              px[j + 3] = 0;
+              continue;
+            }
+            // Surface slope facing the top-left light.
+            const s =
+              curr[i - 1] - curr[i + 1] + (curr[i - gw] - curr[i + gw]);
+            const a = s < 0 ? -s : s;
+            if (a <= 0.01) {
+              px[j + 3] = 0;
+              continue;
+            }
+            if (s > 0) {
+              px[j] = litR;
+              px[j + 1] = litG;
+              px[j + 2] = litB;
+            } else {
+              px[j] = shR;
+              px[j + 1] = shG;
+              px[j + 2] = shB;
+            }
+            px[j + 3] = Math.min(ALPHA_MAX, a * ALPHA_GAIN) * 255;
+          }
+        }
+        offctx.putImageData(image, 0, 0);
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        ctx.drawImage(
+          offscreen,
+          0,
+          0,
+          gw,
+          gh,
+          0,
+          0,
+          window.innerWidth,
+          window.innerHeight,
+        );
+      }
+
+      // Sleep once the surface has settled and the user is away — but stay
+      // awake within the idle-drop window so the ambience keeps breathing.
+      if (maxAbs < SLEEP_EPS && now - lastActivity > IDLE_AFTER_MS * 4) {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        running = false;
+        return;
       }
 
       raf = requestAnimationFrame(frame);
