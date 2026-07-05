@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
 import { TerminalCard } from "@/components/terminal-card";
+import { TerraformCard } from "./terraform-card";
 
 type Project = {
   outcome: ReactNode;
@@ -37,6 +38,24 @@ const projects: Project[] = [
       "At Okapya: a fault-tolerant hourly pipeline syncing thousands of Shopify events into HubSpot at 100% consistency, and a test suite I built from zero to 95%+ coverage.",
     tags: ["Node.js", "TypeScript", "React"],
     screenshot: null,
+    visual: (
+      <>
+        <Image
+          src="/okapya_data_pipeline_dark.png"
+          alt="Screenshot of the Shopify–HubSpot sync pipeline at Okapya"
+          width={1280}
+          height={720}
+          className="night-only aspect-video w-full object-cover grayscale-25 transition-[filter] duration-300 group-hover/frame:grayscale-0"
+        />
+        <Image
+          src="/okapya_data_pipeline_light.png"
+          alt="Screenshot of the Shopify–HubSpot sync pipeline at Okapya"
+          width={1280}
+          height={720}
+          className="day-only aspect-video w-full object-cover grayscale-25 transition-[filter] duration-300 group-hover/frame:grayscale-0"
+        />
+      </>
+    ),
   },
   {
     outcome:
@@ -51,6 +70,7 @@ const projects: Project[] = [
       "A master-replica MySQL setup on AWS with a Python proxy doing latency-based routing — held 100% success across 86,000+ queries at 8,500+ QPS.",
     tags: ["Terraform", "AWS", "Python"],
     screenshot: null,
+    visual: <TerraformCard />,
   },
   {
     outcome: "Rebuilt a legacy quiz platform in Flutter with 100% feature parity",
@@ -63,7 +83,7 @@ const projects: Project[] = [
     description:
       "Real-time avatars synced over Firebase across 10+ modules, and 30+ merge requests reviewed to keep the team unblocked.",
     tags: ["Flutter", "Node.js", "Firebase"],
-    screenshot: null,
+    screenshot: "/kazoo.png",
   },
   {
     outcome: (
@@ -81,7 +101,7 @@ const projects: Project[] = [
     description:
       "End-to-end retrieval with hybrid search and query expansion, tuned against real eval metrics (0.94 recall, 0.87 faithfulness).",
     tags: ["Python", "Chroma", "Claude API"],
-    screenshot: null,
+    screenshot: "/askthespire.png",
   },
 ];
 
