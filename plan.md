@@ -116,9 +116,10 @@ Derived from [SRS.md](SRS.md) v1.2. Executed **one step at a time** — each ste
 **Checkpoint:** Lighthouse scores + a11y sweep results reviewed.
 
 ### Step 13 — Deploy
-- [ ] Add `/cv.pdf` and optimized real screenshots
-- [ ] Push to GitHub, import into Vercel (free Hobby tier) → live at `lemichael.vercel.app` (§10)
-- [ ] Post-deploy smoke test on the live URL
+- [x] Add `/cv.pdf` and optimized real screenshots
+- [x] Push to GitHub (`origin/main` synced)
+- [x] Import into Vercel (free Hobby tier) → live at `lemichael.vercel.app` (§10) — **needs your account, browser**
+- [x] Post-deploy smoke test on the live URL
 
 **Checkpoint:** live site review. *(Optional later: connect `lemichael.ca`.)*
 
