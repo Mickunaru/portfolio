@@ -48,7 +48,7 @@ export default function Home() {
           className="hero-rise font-sans text-sm text-secondary"
           style={{ "--rise-i": 3 } as React.CSSProperties}
         >
-          Backend & full-stack developer · Montréal
+          Full-stack software developer · Montréal
         </p>
         <p className="hero-rise" style={{ "--rise-i": 4 } as React.CSSProperties}>
           <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 font-sans text-xs text-secondary">

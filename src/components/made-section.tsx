@@ -1,7 +1,8 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
+import { RevealGroup, RevealItem } from "@/components/reveal";
 import { TerminalCard } from "@/components/terminal-card";
+import { TiltFrame } from "@/components/tilt-frame";
 import { TerraformCard } from "./terraform-card";
 
 type Project = {
@@ -110,7 +111,7 @@ const projects: Project[] = [
   },
 ];
 
-function ProjectFrame({ project }: { project: Project }) {
+function ProjectFrame({ project }: { readonly project: Project }) {
   const renderContent = () => {
     if (project.screenshot) {
       return (
@@ -137,11 +138,7 @@ function ProjectFrame({ project }: { project: Project }) {
     );
   };
 
-  return (
-    <div className="group/frame overflow-hidden rounded-lg border border-line bg-surface transition-colors duration-200 hover:border-accent">
-      {renderContent()}
-    </div>
-  );
+  return <TiltFrame>{renderContent()}</TiltFrame>;
 }
 
 export function MadeSection() {
@@ -158,34 +155,44 @@ export function MadeSection() {
       <ul className="mt-6 flex flex-col gap-20">
         {projects.map((project, i) => (
           <li key={i}>
-            <Reveal className="flex flex-col gap-3">
-              <ProjectFrame project={project} />
-              <p className="mt-2 font-mono text-xs text-muted">
-                {project.meta}
-                {project.repo && (
-                  <>
-                    {" · "}
-                    <a
-                      href={project.repo.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-accent hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-accent"
-                    >
-                      {project.repo.label}
-                    </a>
-                  </>
-                )}
-              </p>
-              <h3 className="font-serif text-xl font-semibold text-primary">
-                {project.outcome}
-              </h3>
-              <p className="text-base leading-relaxed text-secondary">
-                {project.description}
-              </p>
-              <p className="font-mono text-xs text-muted">
-                {project.tags.join(" · ")}
-              </p>
-            </Reveal>
+            <RevealGroup className="flex flex-col gap-3">
+              <RevealItem>
+                <ProjectFrame project={project} />
+              </RevealItem>
+              <RevealItem>
+                <p className="mt-2 font-mono text-xs text-muted">
+                  {project.meta}
+                  {project.repo && (
+                    <>
+                      {" · "}
+                      <a
+                        href={project.repo.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-accent hover:underline hover:underline-offset-4 focus-visible:outline-2 focus-visible:outline-accent"
+                      >
+                        {project.repo.label}
+                      </a>
+                    </>
+                  )}
+                </p>
+              </RevealItem>
+              <RevealItem>
+                <h3 className="font-serif text-xl font-semibold text-primary">
+                  {project.outcome}
+                </h3>
+              </RevealItem>
+              <RevealItem>
+                <p className="text-base leading-relaxed text-secondary">
+                  {project.description}
+                </p>
+              </RevealItem>
+              <RevealItem>
+                <p className="font-mono text-xs text-muted">
+                  {project.tags.join(" · ")}
+                </p>
+              </RevealItem>
+            </RevealGroup>
           </li>
         ))}
       </ul>
