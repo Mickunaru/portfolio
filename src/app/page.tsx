@@ -66,9 +66,7 @@ export default function Home() {
       <section id="story" className="py-28">
         <RevealGroup className="flex flex-col gap-4">
           <RevealItem>
-            <p className="font-mono text-xs uppercase tracking-widest text-muted">
-              story
-            </p>
+            <p className="font-mono text-xs tracking-widest text-muted">01</p>
           </RevealItem>
           <RevealItem>
             <h2 className="font-serif text-3xl text-primary">Story</h2>
@@ -89,9 +87,7 @@ export default function Home() {
       <section id="background" className="py-28">
         <RevealGroup className="flex flex-col gap-4">
           <RevealItem>
-            <p className="font-mono text-xs uppercase tracking-widest text-muted">
-              background
-            </p>
+            <p className="font-mono text-xs tracking-widest text-muted">02</p>
           </RevealItem>
           <RevealItem>
             <h2 className="font-serif text-3xl text-primary">Background</h2>
@@ -120,9 +116,7 @@ export default function Home() {
       <section id="now" className="py-28">
         <RevealGroup className="flex flex-col gap-4">
           <RevealItem>
-            <p className="font-mono text-xs uppercase tracking-widest text-muted">
-              now
-            </p>
+            <p className="font-mono text-xs tracking-widest text-muted">04</p>
           </RevealItem>
           <RevealItem>
             <h2 className="font-serif text-3xl text-primary">Now</h2>

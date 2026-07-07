@@ -13,9 +13,7 @@ export function ContactSection() {
     <section id="contact" className="py-28">
       <RevealGroup className="flex flex-col gap-4">
         <RevealItem>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted">
-            contact
-          </p>
+          <p className="font-mono text-xs tracking-widest text-muted">05</p>
         </RevealItem>
         <RevealItem>
           <h2 className="font-serif text-3xl text-primary">Get in touch.</h2>

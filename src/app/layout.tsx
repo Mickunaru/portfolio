@@ -66,7 +66,6 @@ export default function RootLayout({
           <p className="font-sans text-xs text-muted">
             Built with Next.js · deployed on Vercel
           </p>
-          <p className="font-sans text-xs text-muted">I also hate portals.</p>
         </footer>
       </body>
     </html>

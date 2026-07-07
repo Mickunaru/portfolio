@@ -149,9 +149,7 @@ export function MadeSection() {
     <section id="made" className="flex flex-col gap-4 py-28">
       <RevealGroup className="flex flex-col gap-4">
         <RevealItem>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted">
-            made
-          </p>
+          <p className="font-mono text-xs tracking-widest text-muted">03</p>
         </RevealItem>
         <RevealItem>
           <h2 className="font-serif text-3xl text-primary">Made</h2>
