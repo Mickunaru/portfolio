@@ -25,11 +25,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://lemichael.vercel.app"),
   title: "Michael Le",
   description:
-    "I build software the way I play games — all the way to 100%. Problem solver by day, gamer by night.",
+    "Backend & full-stack developer in Montréal. I build systems that hold up: 95%+ coverage, 100% consistency, zero regressions.",
   openGraph: {
     title: "Michael Le",
     description:
-      "I build software the way I play games — all the way to 100%. Problem solver by day, gamer by night.",
+      "Backend & full-stack developer in Montréal. I build systems that hold up: 95%+ coverage, 100% consistency, zero regressions.",
     url: "https://lemichael.vercel.app",
     siteName: "Michael Le",
     type: "website",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Michael Le",
     description:
-      "I build software the way I play games — all the way to 100%.",
+      "Backend & full-stack developer in Montréal. I build systems that hold up.",
   },
 };
 

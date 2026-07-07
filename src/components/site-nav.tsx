@@ -50,7 +50,7 @@ export function SiteNav() {
       <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-6 py-3">
         <a
           href="#home"
-          aria-label="ML — back to top"
+          aria-label="ML, back to top"
           className="font-mono text-sm font-semibold tracking-widest text-primary hover:text-accent focus-visible:outline-2 focus-visible:outline-accent"
         >
           ML

@@ -1,10 +1,10 @@
 import { ImageResponse } from "next/og";
 
 /* Simple generated OG card (SRS §9): themed monochrome, headline with the
-   accent "100%", statically rendered at build time. */
+   accent stats, statically rendered at build time. */
 
 export const alt =
-  "Michael Le — I build software the way I play games, all the way to 100%.";
+  "Michael Le, backend & full-stack developer. I build systems that hold up: 95%+ coverage, 100% consistency, zero regressions.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -42,19 +42,20 @@ export default function OpenGraphImage() {
             maxWidth: 1000,
           }}
         >
-          I build software the way I play games — all the way to&nbsp;
-          <span style={{ color: "#38BDF8" }}>100%</span>.
+          I build systems that hold up:&nbsp;
+          <span style={{ color: "#38BDF8" }}>95%+</span>&nbsp;coverage,&nbsp;
+          <span style={{ color: "#38BDF8" }}>100%</span>&nbsp;consistency,
+          zero regressions.
         </div>
         <div
           style={{
             fontSize: 28,
             color: "#A1A1AA",
             marginTop: 32,
-            fontStyle: "italic",
             display: "flex",
           }}
         >
-          Problem solver by day. Gamer by night.
+          Backend & full-stack developer · Montréal
         </div>
       </div>
     ),

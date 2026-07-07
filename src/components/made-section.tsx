@@ -9,7 +9,7 @@ type Project = {
   alt: string;
   meta: string;
   repo?: { label: string; href: string };
-  description: string;
+  description: ReactNode;
   tags: string[];
   screenshot: string | null;
   visual?: ReactNode;
@@ -18,14 +18,12 @@ type Project = {
 const projects: Project[] = [
   {
     outcome:
-      "Ran a full insurance-recommendation app on a 1 vCPU box — 17 ms median, 0% errors under load",
+      "Insurance-recommendation platform on a single vCPU: 17 ms median, 0% errors under load",
     alt: "Screenshot of the insurance-recommendation capstone app",
     meta: "2026 · Capstone",
     description:
       "Capstone for Sollio & Mitco7. DevSecOps pipeline with zero vulnerability regressions, plus an AI pipeline that categorized sensitive claims with privacy kept intact.",
     tags: ["C# / ASP.NET", "AWS", "Gemini"],
-    // Client work (Sollio & Mitco7) — real screenshot withheld pending
-    // sponsor clearance; a self-made load-test terminal card stands in.
     screenshot: null,
     visual: <TerminalCard />,
   },
@@ -34,8 +32,15 @@ const projects: Project[] = [
       "Shipped production software for two years while finishing my degree",
     alt: "Screenshot of the Shopify–HubSpot sync pipeline at Okapya",
     meta: "2024–2026 · Okapya",
-    description:
-      "At Okapya: a fault-tolerant hourly pipeline syncing thousands of Shopify events into HubSpot at 100% consistency, and a test suite I built from zero to 95%+ coverage.",
+    description: (
+      <>
+        At Okapya: new features shipped end-to-end for{" "}
+        <em>Checklist for monday</em>, a SaaS app on the monday.com
+        marketplace, plus a fault-tolerant Shopify→HubSpot pipeline I built
+        solo with 100% sync consistency. Across both, I took test coverage
+        from zero to 95%+.
+      </>
+    ),
     tags: ["Node.js", "TypeScript", "React"],
     screenshot: null,
     visual: (
@@ -59,7 +64,7 @@ const projects: Project[] = [
   },
   {
     outcome:
-      "Taught myself Terraform, then stood up a database cluster in under 2 minutes",
+      "MySQL cluster on AWS, provisioned by Terraform in under 2 minutes",
     alt: "Diagram of the master-replica MySQL cluster on AWS",
     meta: "2025",
     repo: {
@@ -67,7 +72,7 @@ const projects: Project[] = [
       href: "https://github.com/Mickunaru/LOG8415-Project",
     },
     description:
-      "A master-replica MySQL setup on AWS with a Python proxy doing latency-based routing — held 100% success across 86,000+ queries at 8,500+ QPS.",
+      "A master-replica MySQL setup on AWS with a Python proxy doing latency-based routing. Held 100% success across 86,000+ queries at 8,500+ QPS.",
     tags: ["Terraform", "AWS", "Python"],
     screenshot: null,
     visual: <TerraformCard />,
@@ -86,20 +91,20 @@ const projects: Project[] = [
     screenshot: "/kazoo.png",
   },
   {
-    outcome: (
-      <>
-        Built a RAG assistant that answers <em>Slay the Spire</em> questions
-        with citations — for fun
-      </>
-    ),
+    outcome: "RAG assistant with cited answers: 0.94 recall, 0.87 faithfulness",
     alt: "Screenshot of the AskTheSpire RAG assistant",
     meta: "2026",
     repo: {
       label: "github.com/Mickunaru/AskTheSpire",
       href: "https://github.com/Mickunaru/AskTheSpire",
     },
-    description:
-      "End-to-end retrieval with hybrid search and query expansion, tuned against real eval metrics (0.94 recall, 0.87 faithfulness).",
+    description: (
+      <>
+        End-to-end retrieval that answers <em>Slay the Spire</em> questions
+        with citations, using hybrid search and query expansion tuned against
+        real eval metrics.
+      </>
+    ),
     tags: ["Python", "Chroma", "Claude API"],
     screenshot: "/askthespire.png",
   },
@@ -155,8 +160,6 @@ export function MadeSection() {
       <ul className="mt-6 flex flex-col gap-20">
         {projects.map((project, i) => (
           <li key={i}>
-            {/* Each card reveals on its own — the section is too tall for a
-                single group trigger to feel right. */}
             <Reveal className="flex flex-col gap-3">
               <ProjectFrame project={project} />
               <p className="mt-2 font-mono text-xs text-muted">

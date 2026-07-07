@@ -42,7 +42,7 @@ export function TerraformCard() {
       <div className="tf-header flex items-center gap-2 border-b px-4 py-2 transition-colors duration-300">
         <span className="tf-icon">#</span>
         <span className="font-mono text-[11px] tracking-wide opacity-80">
-          main.tf — Master-Replica AWS Cluster
+          main.tf · Master-Replica AWS Cluster
         </span>
       </div>
 
