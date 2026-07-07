@@ -41,10 +41,8 @@ export default function Home() {
           className="hero-rise-solid font-serif text-4xl text-primary sm:text-5xl"
           style={{ "--rise-i": 2 } as React.CSSProperties}
         >
-          I build systems that hold up:{" "}
-          <span className="text-accent">95%+</span> coverage,{" "}
-          <span className="text-accent">100%</span> consistency, zero
-          regressions.
+          I build software end to end, from data model to interface, built
+          to <span className="text-accent">hold up in production</span>.
         </h1>
         <p
           className="hero-rise font-sans text-sm text-secondary"
