@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -10,9 +11,19 @@ const links = [
   { id: "contact", label: "Contact" },
 ];
 
+const sectionToLink: Record<string, string> = {
+  home: "",
+  story: "story",
+  background: "story",
+  made: "made",
+  now: "now",
+  contact: "contact",
+};
+
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -22,7 +33,7 @@ export function SiteNav() {
   }, []);
 
   useEffect(() => {
-    const sections = ["home", ...links.map((l) => l.id)]
+    const sections = Object.keys(sectionToLink)
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
 
@@ -30,7 +41,8 @@ export function SiteNav() {
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setActiveId(entry.target.id === "home" ? null : entry.target.id);
+            const mapped = sectionToLink[entry.target.id];
+            setActiveId(mapped ? mapped : null);
           }
         }
       },
@@ -62,11 +74,22 @@ export function SiteNav() {
                 <a
                   href={`#${id}`}
                   aria-current={activeId === id ? "true" : undefined}
-                  className={`font-sans text-sm transition-colors duration-200 hover:text-accent focus-visible:outline-2 focus-visible:outline-accent ${
+                  className={`relative block font-sans text-sm transition-colors duration-200 hover:text-accent focus-visible:outline-2 focus-visible:outline-accent ${
                     activeId === id ? "text-accent" : "text-secondary"
                   }`}
                 >
                   {label}
+                  {activeId === id && (
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute -bottom-1 left-0 right-0 h-px bg-accent"
+                      transition={
+                        reduced
+                          ? { duration: 0 }
+                          : { type: "spring", stiffness: 400, damping: 32 }
+                      }
+                    />
+                  )}
                 </a>
               </li>
             ))}
