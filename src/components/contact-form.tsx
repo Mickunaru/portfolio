@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 
-/* Message form (FR-7). Zero-backend default: composes a mailto: from the
-   fields. Optional upgrade later: swap the submit handler for a Formspree /
-   Web3Forms POST (SRS §7.5). */
+/* Zero-backend: composes a mailto: from the fields. To upgrade, swap the
+   submit handler for a Formspree / Web3Forms POST. */
 export function ContactForm() {
   const [note, setNote] = useState(false);
 

@@ -55,7 +55,7 @@ export function SiteNav() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b bg-bg/80 backdrop-blur-sm ${
+      className={`sticky top-0 z-50 border-b bg-bg/80 backdrop-blur-md transition-[border-color] duration-300 ${
         scrolled ? "border-line" : "border-transparent"
       }`}
     >

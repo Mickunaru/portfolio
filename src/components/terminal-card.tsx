@@ -21,7 +21,6 @@ const lines: Line[] = [
 export function TerminalCard() {
   return (
     <div className="flex aspect-video w-full flex-col bg-bg border border-line overflow-hidden">
-      {/* Windows chrome */}
       <div className="flex items-center justify-between border-b border-line px-3 py-2 bg-bg/50">
         <div className="flex items-center gap-2">
           <span className="font-mono text-[10px] text-accent">{">_"}</span>
@@ -36,7 +35,6 @@ export function TerminalCard() {
         </div>
       </div>
 
-      {/* output */}
       <div className="flex flex-1 flex-col justify-center gap-1 px-5 font-mono text-[11px] leading-relaxed sm:text-xs">
         {lines.map((line, i) => {
           if (line.kind === "blank") return <div key={i} className="h-1.5" />;

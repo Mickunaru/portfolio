@@ -25,6 +25,12 @@
   --ripple-rgb: 249 115 22;
 }
 
+:root {
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --fade-theme: 400ms ease;
+  --fade-hover: 150ms ease;
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -39,34 +45,19 @@
   --font-mono: var(--font-jetbrains-mono);
 }
 
-/* Theme switch cross-fade: ~400ms ease. Hover states may
-   override with their own faster transitions. */
-*,
-::before,
-::after {
-  transition:
-    background-color 400ms ease,
-    color 400ms ease,
-    border-color 400ms ease,
-    fill 400ms ease,
-    stroke 400ms ease;
-}
+/* Base */
 
 html {
-  /* FR-2: nav links glide to their section; offset clears the sticky nav. */
   scroll-behavior: smooth;
-  scroll-padding-top: 4rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  scroll-padding-top: 4rem; /* clears the sticky nav */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
 body {
   background: var(--bg);
   color: var(--text-primary);
+  -webkit-tap-highlight-color: transparent;
 }
 
 :focus-visible {
@@ -74,53 +65,109 @@ body {
   outline-offset: 2px;
 }
 
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--text-primary);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Transitions */
+
+a,
+button {
+  transition:
+    color var(--fade-hover),
+    background-color var(--fade-hover),
+    border-color var(--fade-hover);
+}
+input,
+textarea {
+  transition: border-color var(--fade-hover);
+}
+
+/* Theme cross-fade runs only while the toggle holds `theme-switching`
+   on <html>, so hover/focus transitions stay snappy the rest of the time. */
+html.theme-switching *,
+html.theme-switching ::before,
+html.theme-switching ::after {
+  transition:
+    background-color var(--fade-theme),
+    color var(--fade-theme),
+    border-color var(--fade-theme),
+    fill var(--fade-theme),
+    stroke var(--fade-theme) !important;
+}
+
+/* Hero entrance */
+
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
     transform: none;
   }
 }
-.hero-rise {
-  animation: rise 550ms ease-out both;
-  animation-delay: calc(var(--rise-i, 0) * 70ms);
-}
 
 @keyframes rise-solid {
   from {
-    transform: translateY(20px);
+    transform: translateY(24px);
   }
   to {
     transform: none;
   }
 }
+
+.hero-rise,
 .hero-rise-solid {
-  animation: rise-solid 550ms ease-out both;
-  animation-delay: calc(var(--rise-i, 0) * 70ms);
+  animation: rise 800ms var(--ease-out-quint) both;
+  animation-delay: calc(var(--rise-i, 0) * 80ms);
 }
-@media (prefers-reduced-motion: reduce) {
-  .hero-rise,
-  .hero-rise-solid {
-    animation: none;
-  }
+.hero-rise-solid {
+  animation-name: rise-solid;
 }
+
+/* Theme-scoped elements */
 
 [data-theme="night"] .day-only,
 [data-theme="day"] .night-only {
   display: none;
 }
 
+/* `cx` is the SVG circle's center, animatable as a CSS property. */
 .sun-moon-bite {
-  transition: cx 400ms ease;
+  transition: cx var(--fade-theme);
 }
 .sun-moon-rays {
   transform-origin: center;
   transition:
-    transform 400ms ease,
-    opacity 400ms ease;
+    transform var(--fade-theme),
+    opacity var(--fade-theme);
 }
 [data-theme="night"] .sun-moon-bite {
   cx: 16.5;
@@ -135,4 +182,27 @@ body {
 [data-theme="day"] .sun-moon-rays {
   opacity: 1;
   transform: none;
+}
+
+/* Components */
+
+.tilt-card {
+  transition:
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+.tilt-card:hover {
+  box-shadow: 0 16px 48px -16px rgb(var(--ripple-rgb) / 0.35);
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hero-rise,
+  .hero-rise-solid {
+    animation: none;
+  }
 }

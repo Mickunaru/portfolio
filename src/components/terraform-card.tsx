@@ -10,10 +10,8 @@ export function TerraformCard() {
 
   return (
     <div className="tf-bg flex aspect-video w-full flex-col border border-line overflow-hidden rounded-md shadow-lg transition-colors duration-300">
-      {/* Scoped CSS block for hydration-safe Theme toggling */}
       <style dangerouslySetInnerHTML={{
         __html: `
-        /* Light Mode Defaults */
         .tf-bg { background-color: #ffffff; color: #333333; }
         .tf-header { background-color: #f3f3f3; border-bottom-color: #e5e5e5; }
         .tf-icon { color: #0000ff; }
@@ -25,7 +23,6 @@ export function TerraformCard() {
         .tf-r { color: #001080; }
         .tf-m { color: #267f99; }
 
-        /* Dark Mode Overrides (Triggered by your ThemeToggle) */
         [data-theme='night'] .tf-bg { background-color: #1e1e1e; color: #cccccc; }
         [data-theme='night'] .tf-header { background-color: #252526; border-bottom-color: #333333; }
         [data-theme='night'] .tf-icon { color: #569cd6; }
@@ -38,7 +35,6 @@ export function TerraformCard() {
         [data-theme='night'] .tf-m { color: #4ec9b0; }
       `}} />
 
-      {/* IDE Chrome */}
       <div className="tf-header flex items-center gap-2 border-b px-4 py-2 transition-colors duration-300">
         <span className="tf-icon">#</span>
         <span className="font-mono text-[11px] tracking-wide opacity-80">
@@ -46,7 +42,6 @@ export function TerraformCard() {
         </span>
       </div>
 
-      {/* Code Area */}
       <div className="flex flex-1 flex-col justify-start px-6 py-4 font-mono text-[10px] leading-[1.6] sm:text-[11px] overflow-y-auto custom-scrollbar">
         <pre>
           <code>

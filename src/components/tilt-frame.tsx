@@ -47,7 +47,7 @@ export function TiltFrame({ children }: { readonly children: ReactNode }) {
             ? undefined
             : { rotateX, rotateY, transformStyle: "preserve-3d" }
         }
-        className="group/frame relative overflow-hidden rounded-lg border border-line bg-surface transition-colors duration-200 hover:border-accent"
+        className="group/frame tilt-card relative overflow-hidden rounded-lg border border-line bg-surface hover:border-accent"
       >
         {children}
       </motion.div>

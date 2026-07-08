@@ -1,9 +1,7 @@
 import { useId } from "react";
 
-/* Signature motif (SRS §5.5, FR-4): line-work sun that eases into a moon.
-   Theme-driven entirely by CSS on [data-theme] (see globals.css): the mask
-   bite slides in to carve the disc into a crescent while the rays rotate
-   out. Server markup is theme-independent. */
+/* Sun that eases into a moon, driven entirely by CSS on [data-theme]
+   (see globals.css) so server markup is theme-independent. */
 export function SunMoon({ className }: { className?: string }) {
   const maskId = useId();
 

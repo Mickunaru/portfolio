@@ -1,16 +1,25 @@
 "use client";
 
+import { useRef } from "react";
 import { SunMoon } from "@/components/sun-moon";
 
 const STORAGE_KEY = "theme";
 
-/* Nav theme toggle (FR-1). The sun/moon motif inside is styled purely off
-   [data-theme], so the server markup is identical for both themes and there
-   is nothing to mismatch on hydration. */
+/* Styled purely off [data-theme] so server markup is identical for both
+   themes — nothing to mismatch on hydration. */
 export function ThemeToggle() {
+  const fadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const toggle = () => {
     const root = document.documentElement;
     const next = root.getAttribute("data-theme") === "night" ? "day" : "night";
+    // Scopes the 400ms cross-fade to the switch; see globals.css.
+    root.classList.add("theme-switching");
+    if (fadeTimer.current) clearTimeout(fadeTimer.current);
+    fadeTimer.current = setTimeout(
+      () => root.classList.remove("theme-switching"),
+      450,
+    );
     root.setAttribute("data-theme", next);
     try {
       localStorage.setItem(STORAGE_KEY, next);

@@ -3,13 +3,6 @@
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 
-/* Scroll-reveal motion (FR-3, SRS §5.4): soft slide-in + fade as a section
-   enters the viewport, children staggered ~70ms, running once. Under
-   prefers-reduced-motion everything places with a simple fade and no
-   transform (FR-6).
-
-   RSC children pass through untouched — only the wrappers are client. */
-
 const VIEWPORT = { once: true, amount: 0.15 } as const;
 
 function useVariants(): Variants {
@@ -19,18 +12,20 @@ function useVariants(): Variants {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduced ? 0.2 : 0.55, ease: "easeOut" },
+      transition: {
+        duration: reduced ? 0.2 : 0.7,
+        ease: [0.22, 1, 0.36, 1],
+      },
     },
   };
 }
 
-/** Single block that reveals as one unit when scrolled into view. */
 export function Reveal({
   children,
   className,
 }: {
-  children: ReactNode;
-  className?: string;
+  readonly children: ReactNode;
+  readonly className?: string;
 }) {
   const variants = useVariants();
   return (
@@ -46,13 +41,12 @@ export function Reveal({
   );
 }
 
-/** Container whose RevealItem children stagger in (~70ms apart). */
 export function RevealGroup({
   children,
   className,
 }: {
-  children: ReactNode;
-  className?: string;
+  readonly children: ReactNode;
+  readonly className?: string;
 }) {
   return (
     <motion.div
@@ -70,13 +64,12 @@ export function RevealGroup({
   );
 }
 
-/** Child of RevealGroup; inherits the group's stagger timing. */
 export function RevealItem({
   children,
   className,
 }: {
-  children: ReactNode;
-  className?: string;
+  readonly children: ReactNode;
+  readonly className?: string;
 }) {
   const variants = useVariants();
   return (

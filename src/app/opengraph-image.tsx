@@ -1,8 +1,5 @@
 import { ImageResponse } from "next/og";
 
-/* Simple generated OG card (SRS §9): themed monochrome, headline with the
-   accent stats, statically rendered at build time. */
-
 export const alt =
   "Michael Le, backend & full-stack developer. I build systems that hold up: 95%+ coverage, 100% consistency, zero regressions.";
 export const size = { width: 1200, height: 630 };

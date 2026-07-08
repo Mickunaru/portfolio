@@ -2,20 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/* Ambient water background (FR-5): a fixed full-viewport canvas behind all
-   content running a real heightfield water simulation — dragging the cursor
-   disturbs the surface and leaves a wake of small interfering waves, as if
-   dragging a finger across still water. A click makes a bigger splash, and
-   an occasional idle drop keeps the surface faintly alive.
+/* Fixed full-viewport canvas behind all content running a heightfield
+   water simulation: drags leave a wake, clicks splash, idle rain keeps
+   the surface alive. Pauses while the tab is hidden, sleeps once the
+   surface settles, disabled under prefers-reduced-motion.
 
-   Constraints from the SRS: pointer-events none, requestAnimationFrame,
-   theme-aware color, paused while the tab is hidden, auto-sleeps once the
-   surface settles, whisper-subtle, and disabled entirely under
-   prefers-reduced-motion (FR-6).
-
-   Implementation: classic two-buffer wave equation on a low-res grid
-   (CELL css px per cell), rendered into a grid-sized ImageData tinted with
-   the theme accent, then scaled up to the viewport with image smoothing. */
+   Two-buffer wave equation on a low-res grid (CELL css px per cell),
+   rendered into a grid-sized ImageData tinted with the theme accent,
+   then scaled up to the viewport with image smoothing. */
 
 const CELL = 3; // css px per sim cell — lower is sharper but costlier
 const DAMPING = 0.975; // energy loss per step; higher rings longer
@@ -103,8 +97,8 @@ export function AmbientWater() {
     resize();
     window.addEventListener("resize", resize);
 
-    /* Press the surface down in a small rounded bump — the wave equation
-       does the rest (propagation, reflection off edges, interference). */
+    /* Press the surface down in a rounded bump; the wave equation does
+       the rest (propagation, edge reflection, interference). */
     const disturb = (cx: number, cy: number, radius: number, depth: number) => {
       const gx = cx / CELL;
       const gy = cy / CELL;
@@ -143,8 +137,8 @@ export function AmbientWater() {
       const dy = e.clientY - lastY;
       const dist = Math.hypot(dx, dy);
       if (dist < MOVE_SPACING) return;
-      // Stamp along the path so fast drags leave a continuous wake; faster
-      // movement pushes slightly deeper, like a finger cutting through.
+      // Stamp along the path so fast drags leave a continuous wake;
+      // faster movement pushes slightly deeper.
       const depth = Math.min(1.4, 0.5 + dist * 0.02);
       const steps = Math.min(24, Math.floor(dist / MOVE_SPACING));
       for (let i = 1; i <= steps; i++) {
@@ -168,9 +162,8 @@ export function AmbientWater() {
     window.addEventListener("pointerdown", onDown, { passive: true });
 
     const frame = (now: number) => {
-      // Rain mode: once the user goes idle, a light patter starts — each
-      // tick drops a small cluster at random spots with jittered timing so
-      // it never sounds mechanical, and the odd tick lands one heavy plop.
+      // Idle rain: each tick drops a small cluster at random spots with
+      // jittered timing; the odd tick lands one heavy plop.
       if (now - lastActivity > IDLE_AFTER_MS && now - lastIdle > nextRainGap) {
         lastIdle = now;
         nextRainGap = IDLE_EVERY_MS * (0.4 + Math.random() * 1.2);
@@ -212,14 +205,13 @@ export function AmbientWater() {
       }
       [curr, prev] = [prev, curr];
 
-      // Paint with slope shading: light comes from the top-left, so the
-      // near face of a crest catches a pale highlight and the far face
-      // falls into a darker accent shadow — reads as refraction rather
-      // than flat shimmer. Alpha follows slope steepness.
+      // Slope shading, light from the top-left: near face of a crest gets
+      // a pale highlight, far face a darker accent shadow. Alpha follows
+      // slope steepness.
       if (image) {
         const px = image.data;
-        // Lit tint (accent washed toward white) and shadow tint (accent
-        // pulled toward black), computed here so theme swaps apply live.
+        // Lit/shadow tints derived from the accent per frame so theme
+        // swaps apply live.
         const litR = tintR + (255 - tintR) * 0.55;
         const litG = tintG + (255 - tintG) * 0.55;
         const litB = tintB + (255 - tintB) * 0.55;
@@ -270,8 +262,8 @@ export function AmbientWater() {
         );
       }
 
-      // Sleep once the surface has settled and the user is away — but stay
-      // awake within the idle-drop window so the ambience keeps breathing.
+      // Sleep once the surface settles, but stay awake within the
+      // idle-rain window.
       if (maxAbs < SLEEP_EPS && now - lastActivity > IDLE_AFTER_MS * 4) {
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         running = false;
