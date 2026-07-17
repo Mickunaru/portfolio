@@ -65,6 +65,20 @@ const projects: Project[] = [
   },
   {
     outcome:
+      "Personal finance dashboard synced to real bank accounts through Plaid",
+    alt: "Screenshot of the balancr net-worth dashboard",
+    meta: "2026",
+    repo: {
+      label: "github.com/Mickunaru/balancr",
+      href: "https://github.com/Mickunaru/balancr",
+    },
+    description:
+      "Cursor-based incremental transaction sync with webhooks and auto-repair of expired bank links, plus auto-categorization that learns from manual corrections. Budgets, CSV import with duplicate detection, and net-worth analytics on top.",
+    tags: ["Next.js", "Plaid", "PostgreSQL"],
+    screenshot: "/balancr.png",
+  },
+  {
+    outcome:
       "MySQL cluster on AWS, provisioned by Terraform in under 2 minutes",
     alt: "Diagram of the master-replica MySQL cluster on AWS",
     meta: "2025",
